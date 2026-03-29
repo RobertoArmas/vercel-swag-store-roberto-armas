@@ -1,0 +1,27 @@
+import { FeaturedProduct } from "@/types/products/featured-product";
+import Image from "next/image";
+import Link from "next/link";
+
+export default function ProductCard({ product }: { product: FeaturedProduct }) {
+  const formattedPrice = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(product.price / 100);
+
+  return (
+    <Link href={`/products/${product.slug}`} className="group">
+      <div className="aspect-square bg-neutral-100 rounded-lg overflow-hidden mb-3">
+        <Image
+          loading="eager"
+          src={product.images[0]}
+          alt={product.name}
+          width={500}
+          height={500}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+        />
+      </div>
+      <h3 className="text-sm font-medium text-black">{product.name}</h3>
+      <span className="text-sm text-gray-500 mt-0.5">{formattedPrice}</span>
+    </Link>
+  );
+}

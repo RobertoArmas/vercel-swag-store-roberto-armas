@@ -4,11 +4,15 @@ import { ArrowRight } from "lucide-react";
 type HeroSectionProps = Readonly<{
   title: string;
   copy: string;
+  cta: {
+    url: string;
+    label: string;
+  };
 }>;
 
-export function HeroSection({ title, copy }: HeroSectionProps) {
+export function HeroSection({ title, copy, cta }: HeroSectionProps) {
   return (
-    <section className="py-3 md:py-6">
+    <section className="py-3 md:py-6 max-w-3xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           {/* Hero Title */}
@@ -23,10 +27,10 @@ export function HeroSection({ title, copy }: HeroSectionProps) {
 
           {/* CTA Button */}
           <Link
-            href="/products"
+            href={cta.url}
             className="inline-flex items-center gap-2 bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors font-medium text-sm"
           >
-            Browse All Products
+            {cta.label}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
