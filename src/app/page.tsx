@@ -1,8 +1,6 @@
 import { HeroSection } from "@/components/home/HeroSection";
 import FeaturedProducts from "@/components/products/FeaturedProducts";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
-import { Suspense } from "react";
 
 export const generateMetadata = async () => {
   const storeConfiguration = await getStoreConfiguration();
