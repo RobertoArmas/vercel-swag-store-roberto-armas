@@ -1,7 +1,6 @@
 import Link from "next/link";
 import DynamicFeaturedProducts from "./DynamicFeaturedProducts";
 import { Suspense } from "react";
-import { Skeleton } from "../ui/skeleton";
 import { ProductCardSkeleton } from "./ProductCard";
 export default function FeaturedProducts() {
   return (
