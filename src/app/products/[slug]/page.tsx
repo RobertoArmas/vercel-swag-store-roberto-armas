@@ -1,6 +1,7 @@
 import StockIndicator from "@/components/products/StockIndicator";
 import AddToCartButton from "@/components/shopping-cart/AddToCartButton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getStoreConfiguration } from "@/lib/swag-store/config";
 import { getAllProducts, getProductBySlug } from "@/lib/swag-store/product";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -13,6 +14,33 @@ type ProductDetailProps = {
 export const generateStaticParams = async () => {
   const products = await getAllProducts();
   return products.map((product) => ({ slug: product.slug }));
+};
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) => {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+  if (!product) {
+    notFound();
+  }
+  const storeConfiguration = await getStoreConfiguration();
+  const title = storeConfiguration.seo.titleTemplate.replace(
+    "%s",
+    product.name
+  );
+  return {
+    title: title,
+    description:
+      product.description || storeConfiguration.seo.defaultDescription,
+    openGraph: {
+      title: title,
+      description:
+        product.description || storeConfiguration.seo.defaultDescription,
+    },
+  };
 };
 
 export default async function ProductDetailPage({

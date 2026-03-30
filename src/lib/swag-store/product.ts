@@ -2,6 +2,7 @@ import { FeaturedProduct } from "@/types/products/featured-product";
 import { ProductStock } from "@/types/products/stock";
 import { cacheLife, cacheTag } from "next/cache";
 import { headers } from "./utils";
+import { Product } from "@/types/products/product";
 
 export const getFeaturedProducts = async (): Promise<FeaturedProduct[]> => {
   const response = await fetch(
@@ -14,7 +15,7 @@ export const getFeaturedProducts = async (): Promise<FeaturedProduct[]> => {
 
 export const getProductBySlug = async (
   slug: string
-): Promise<FeaturedProduct | null> => {
+): Promise<Product | null> => {
   "use cache";
   cacheLife("hours");
   cacheTag("product", `product-detail-${slug}`);
@@ -22,16 +23,39 @@ export const getProductBySlug = async (
     headers: headers(),
   });
   if (!response.ok) return null;
-  const { data }: { data: FeaturedProduct } = await response.json();
+  const { data }: { data: Product } = await response.json();
+  return data;
+};
+
+export const getProducts = async (page: number): Promise<Product[]> => {
+  const response = await fetch(
+    `${process.env.BASE_URL}/api/products?page=${page}`,
+    {
+      headers: headers(),
+    }
+  );
+  const { data }: { data: Product[] } = await response.json();
   return data;
 };
 
 export const getAllProducts = async (): Promise<FeaturedProduct[]> => {
-  const response = await fetch(`${process.env.BASE_URL}/api/products`, {
-    headers: headers(),
-  });
-  const { data }: { data: FeaturedProduct[] } = await response.json();
-  return data;
+  const allProducts: FeaturedProduct[] = [];
+  let page = 1;
+
+  while (true) {
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/products?page=${page}`,
+      { headers: headers() }
+    );
+    const { data }: { data: FeaturedProduct[] } = await response.json();
+
+    if (!data?.length) break;
+
+    allProducts.push(...data);
+    page++;
+  }
+
+  return allProducts;
 };
 
 export const getProductStock = async (slug: string): Promise<ProductStock> => {
