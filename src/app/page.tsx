@@ -1,6 +1,7 @@
 import { HeroSection } from "@/components/home/HeroSection";
 import FeaturedProducts from "@/components/products/FeaturedProducts";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
+import { cacheLife, cacheTag } from "next/cache";
 
 export const generateMetadata = async () => {
   const storeConfiguration = await getStoreConfiguration();
@@ -16,6 +17,9 @@ export const generateMetadata = async () => {
 };
 
 export default async function Home() {
+  "use cache";
+  cacheLife("default");
+  cacheTag("home");
   const storeConfiguration = await getStoreConfiguration();
   return (
     <>

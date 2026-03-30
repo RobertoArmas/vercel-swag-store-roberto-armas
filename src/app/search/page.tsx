@@ -33,7 +33,7 @@ export const generateMetadata = async () => {
 export const getCategoriesData = async () => {
   "use cache";
   cacheLife("hours");
-  cacheTag("categories", "categories");
+  cacheTag("categories", "products");
   return await getCategories();
 };
 

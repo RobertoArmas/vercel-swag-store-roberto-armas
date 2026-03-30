@@ -49,6 +49,9 @@ export const getProducts = async (
 };
 
 export const getAllProducts = async (): Promise<FeaturedProduct[]> => {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products");
   const allProducts: FeaturedProduct[] = [];
   let page = 1;
 
