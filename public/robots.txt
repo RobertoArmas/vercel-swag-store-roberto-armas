@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+Sitemap: https://vercel-swag-store-roberto-armas.vercel.app/sitemap.xml
