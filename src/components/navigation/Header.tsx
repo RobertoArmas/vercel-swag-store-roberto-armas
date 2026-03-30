@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { ShoppingCart, Search } from "lucide-react";
+import CartIndicator from "../shopping-cart/CartIndicator.client";
+import { Suspense } from "react";
 
 export default function Header() {
   return (
@@ -43,21 +45,17 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Cart Icon */}
             <div className="flex items-center gap-4">
+              {/* Search Icon */}
               <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
                 <Search className="w-5 h-5 text-gray-700" />
               </button>
-              <Link
-                href="/cart"
-                className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors group"
+              {/* Cart Icon */}
+              <Suspense
+                fallback={<ShoppingCart className="w-5 h-5 text-gray-700" />}
               >
-                <ShoppingCart className="w-5 h-5 text-gray-700" />
-                {/* Cart Badge */}
-                <span className="absolute top-0 right-0 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center group-hover:bg-gray-800">
-                  0
-                </span>
-              </Link>
+                <CartIndicator />
+              </Suspense>
             </div>
           </div>
         </div>
