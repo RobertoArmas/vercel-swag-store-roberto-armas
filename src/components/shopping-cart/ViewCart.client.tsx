@@ -43,9 +43,14 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
   const handleUpdateQuantity = async (productId: string, quantity: number) => {
     try {
       const data = await updateQuantity(productId, quantity);
+      if (typeof data === "string") {
+        setError(data);
+        return data;
+      }
       reloadCart(data);
     } catch (error) {
-      setError(error instanceof Error ? error.message : "Something went wrong");
+      console.error(error);
+      setError("Something went wrong");
     } finally {
       setIsLoading(false);
     }
