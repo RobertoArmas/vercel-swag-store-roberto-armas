@@ -1,10 +1,7 @@
 "use client";
 
 import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
 import { useCart } from "@/lib/cart-manager/hooks/use-cart";
-import dynamic from "next/dynamic";
-import { Skeleton } from "../ui/skeleton";
 
 export default function CartIndicator() {
   const { itemCount, setIsOpen, isOpen } = useCart();

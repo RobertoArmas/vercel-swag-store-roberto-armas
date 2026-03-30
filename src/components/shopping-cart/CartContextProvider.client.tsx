@@ -1,5 +1,4 @@
 import { CartContext, useCartReducer } from "@/lib/cart-manager";
-import { Skeleton } from "../ui/skeleton";
 import dynamic from "next/dynamic";
 
 export default function CartContextProvider({
