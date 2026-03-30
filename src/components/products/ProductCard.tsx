@@ -17,6 +17,7 @@ export default function ProductCard({
     <Link href={`/products/${product.slug}`} className="group">
       <div className="aspect-square bg-neutral-100 rounded-lg overflow-hidden mb-3">
         <Image
+          quality={85}
           loading="eager"
           src={product.images[0]}
           alt={product.name}

@@ -119,6 +119,7 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
                       className="w-20 h-20 shrink-0 bg-neutral-100 rounded-md overflow-hidden"
                     >
                       <Image
+                        quality={75}
                         src={item.product.images[0]}
                         alt={item.product.name}
                         width={80}
