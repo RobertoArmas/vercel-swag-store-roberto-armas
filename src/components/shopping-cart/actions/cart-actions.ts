@@ -35,6 +35,10 @@ export async function updateQuantity(
   quantity: number,
   formData: FormData
 ): Promise<Cart> {
+  const stock = await getProductStock(productId);
+  if (!stock.inStock || stock.stock < quantity) {
+    throw new Error("Product is out of stock");
+  }
   return await updateQuantityApi(
     productId,
     quantity,
