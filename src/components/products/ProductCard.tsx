@@ -1,6 +1,7 @@
 import { FeaturedProduct } from "@/types/products/featured-product";
 import Image from "next/image";
 import Link from "next/link";
+import { Skeleton } from "../ui/skeleton";
 
 export default function ProductCard({ product }: { product: FeaturedProduct }) {
   const formattedPrice = new Intl.NumberFormat("en-US", {
@@ -25,3 +26,17 @@ export default function ProductCard({ product }: { product: FeaturedProduct }) {
     </Link>
   );
 }
+
+export const ProductCardSkeleton = () => {
+  return (
+    <>
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i}>
+          <Skeleton className="aspect-square w-full rounded-lg mb-3" />
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/3 mt-1.5" />
+        </div>
+      ))}
+    </>
+  );
+};

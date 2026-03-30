@@ -18,6 +18,7 @@ export default function AddToCartButtonClient({
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [isCartReady, setIsCartReady] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (token) {
@@ -35,14 +36,17 @@ export default function AddToCartButtonClient({
     }, 1500);
   }
 
+  const handleFromAction = async (formData: FormData) => {
+    try {
+      const data = await addToCart(product.id, formData);
+      handleAdd(data);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Something went wrong");
+    }
+  };
+
   return (
-    <form
-      action={async (formData: FormData) => {
-        const data = await addToCart(product.id, formData);
-        handleAdd(data);
-      }}
-      className="flex flex-col gap-3"
-    >
+    <form action={handleFromAction} className="flex flex-col gap-3">
       <input type="hidden" name="token" value={token ?? ""} />
       <input type="hidden" name="quantity" value={quantity} />
       <div className="flex items-center gap-3">
@@ -92,6 +96,7 @@ export default function AddToCartButtonClient({
           "Add to Cart"
         )}
       </button>
+      {error && <span className="text-red-500 text-sm">{error}</span>}
     </form>
   );
 }

@@ -28,9 +28,7 @@ export default function Home() {
           label: "Browse All Products",
         }}
       />
-      <Suspense fallback={<Skeleton className="w-full h-[500px] rounded-lg" />}>
-        <FeaturedProducts />
-      </Suspense>
+      <FeaturedProducts />
     </main>
   );
 }

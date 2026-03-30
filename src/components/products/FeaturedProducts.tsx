@@ -1,8 +1,9 @@
 import Link from "next/link";
-import ProductCard from "./ProductCard";
-import { getFeaturedProducts } from "@/lib/swag-store/product";
-export default async function FeaturedProducts() {
-  const products = await getFeaturedProducts();
+import DynamicFeaturedProducts from "./DynamicFeaturedProducts";
+import { Suspense } from "react";
+import { Skeleton } from "../ui/skeleton";
+import { ProductCardSkeleton } from "./ProductCard";
+export default function FeaturedProducts() {
   return (
     <section className="w-full py-3 md:py-6">
       <div className="mt-16 md:mt-24">
@@ -18,9 +19,9 @@ export default async function FeaturedProducts() {
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          <Suspense fallback={<ProductCardSkeleton />}>
+            <DynamicFeaturedProducts />
+          </Suspense>
         </div>
       </div>
     </section>
