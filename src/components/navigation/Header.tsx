@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ShoppingCart, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import CartIndicator from "../shopping-cart/CartIndicator";
 import { Suspense } from "react";
 import { CartIndicatorStaticLoadingState } from "../shopping-cart/CartIndicator.client";
