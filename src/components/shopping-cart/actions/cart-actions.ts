@@ -5,12 +5,17 @@ import {
   removeItem as removeItemApi,
   updateQuantity as updateQuantityApi,
 } from "@/lib/swag-store/cart";
+import { getProductStock } from "@/lib/swag-store/product";
 import { Cart } from "@/types/cart";
 
 export async function addToCart(
   productId: string,
   formData: FormData
 ): Promise<Cart> {
+  const stock = await getProductStock(productId);
+  if (!stock.inStock || stock.stock < Number(formData.get("quantity"))) {
+    throw new Error("Product is out of stock");
+  }
   return await addToCartApi(
     productId,
     Number(formData.get("quantity")),
