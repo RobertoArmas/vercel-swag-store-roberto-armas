@@ -11,7 +11,6 @@ export async function addToCart(
   productId: string,
   formData: FormData
 ): Promise<Cart> {
-  console.log("formData", formData);
   return await addToCartApi(
     productId,
     Number(formData.get("quantity")),

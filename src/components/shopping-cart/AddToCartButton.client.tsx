@@ -14,14 +14,13 @@ export default function AddToCartButtonClient({
   stock: number;
   product: FeaturedProduct;
 }) {
-  const { reloadCart, token } = useCart();
+  const { reloadCart, token, setIsOpen } = useCart();
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [isCartReady, setIsCartReady] = useState(false);
 
   useEffect(() => {
     if (token) {
-      console.log("token", token);
       setTimeout(() => setIsCartReady(true), 100);
     }
   }, [token]);
@@ -30,6 +29,7 @@ export default function AddToCartButtonClient({
     reloadCart(data);
     setAdded(true);
     setTimeout(() => {
+      setIsOpen(true);
       setAdded(false);
       setQuantity(1);
     }, 1500);

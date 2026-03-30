@@ -84,6 +84,7 @@ export default async function ProductDetailPage({
                 {product.name}
               </h1>
               <p className="text-2xl text-gray-700 mt-3">{formattedPrice}</p>
+              <p className="text-gray-700 mt-3">{product.description}</p>
             </div>
 
             <Suspense fallback={<Skeleton className="w-full h-10" />}>

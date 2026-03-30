@@ -43,7 +43,6 @@ export async function removeItem(
   productId: string,
   token: string
 ): Promise<Cart> {
-  console.log("removeItem", productId, token);
   const response = await fetch(
     `${process.env.BASE_URL}/api/cart/${productId}`,
     {

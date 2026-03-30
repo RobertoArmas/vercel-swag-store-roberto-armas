@@ -2,7 +2,7 @@ import { FeaturedProduct } from "@/types/products/featured-product";
 import { ProductStock } from "@/types/products/stock";
 import { cacheLife, cacheTag } from "next/cache";
 import { headers } from "./utils";
-import { Product } from "@/types/products/product";
+import { Product, SearchResult } from "@/types/products/product";
 
 export const getFeaturedProducts = async (): Promise<FeaturedProduct[]> => {
   const response = await fetch(
@@ -27,14 +27,24 @@ export const getProductBySlug = async (
   return data;
 };
 
-export const getProducts = async (page: number): Promise<Product[]> => {
+export const getProducts = async (
+  search?: string,
+  category?: string,
+  page: number = 1,
+  limit: number = 5
+): Promise<SearchResult> => {
+  const searchParams = new URLSearchParams();
+  if (search) searchParams.set("search", search);
+  if (category) searchParams.set("category", category);
+  if (page) searchParams.set("page", page.toString());
+  if (limit) searchParams.set("limit", limit.toString());
   const response = await fetch(
-    `${process.env.BASE_URL}/api/products?page=${page}`,
+    `${process.env.BASE_URL}/api/products?${searchParams.toString()}`,
     {
       headers: headers(),
     }
   );
-  const { data }: { data: Product[] } = await response.json();
+  const data = await response.json();
   return data;
 };
 
