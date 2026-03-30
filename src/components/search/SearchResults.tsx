@@ -13,7 +13,7 @@ export default async function SearchResults({
   const query = q ?? "";
   const isSearching = !!query;
 
-  const products = await getProducts(query, category, page, 2);
+  const products = await getProducts(query, category, page, 5);
 
   if (products.data.length === 0) {
     return (
@@ -65,7 +65,7 @@ export default async function SearchResults({
       <div className="flex flex-col gap-4">
         <SearchResultsClient products={products.data} />
       </div>
-      <div className="flex justify-center items-center mt-16">
+      <div className="flex justify-center items-center mt-8 md:mt-16">
         <Pagination
           pagination={products.meta.pagination}
           searchParams={searchParams}

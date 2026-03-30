@@ -17,7 +17,7 @@ export const generateMetadata = async () => {
 
 export default function Home() {
   return (
-    <main className="flex flex-1 w-full max-w-7xl mx-auto flex-col px-4 sm:px-8 bg-white dark:bg-black">
+    <>
       <HeroSection
         title="Wear the framework you ship with."
         copy="Premium swag for developers who build with Vercel. From tees to tech gear, reprsent the tools you love."
@@ -30,6 +30,6 @@ export default function Home() {
         title="Featured Products"
         viewAllUrl={{ url: "/search", text: "View All" }}
       />
-    </main>
+    </>
   );
 }

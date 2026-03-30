@@ -59,7 +59,9 @@ export default function RootLayout({
           >
             <PromotionalBanner />
           </Suspense>
-          {children}
+          <main className="flex flex-1 w-full max-w-7xl mx-auto flex-col px-4 sm:px-8 bg-white dark:bg-black pb-16 md:pb-32">
+            {children}
+          </main>
           <Footer />
         </Providers>
       </body>

@@ -41,8 +41,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const categories = await getCategoriesData();
 
   return (
-    <main className="flex flex-1 w-full max-w-7xl mx-auto flex-col py-16 px-4 sm:px-8 bg-white dark:bg-black">
-      <h1 className="text-3xl font-bold text-black dark:text-white mb-8">
+    <>
+      <h1 className="text-3xl pt-8 md:pt-16 font-bold text-black dark:text-white mb-8">
         Search
       </h1>
       <Suspense fallback={<SearchResultsSkeleton />}>
@@ -58,6 +58,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           <SearchResults searchParams={searchParams} />
         </SearchProvider>
       </Suspense>
-    </main>
+    </>
   );
 }
