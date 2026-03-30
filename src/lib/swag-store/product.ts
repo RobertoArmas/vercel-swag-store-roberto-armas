@@ -18,7 +18,7 @@ export const getProductBySlug = async (
 ): Promise<Product | null> => {
   "use cache";
   cacheLife("hours");
-  cacheTag("product", `product-detail-${slug}`);
+  cacheTag("products", `product-detail-${slug}`);
   const response = await fetch(`${process.env.BASE_URL}/api/products/${slug}`, {
     headers: headers(),
   });
@@ -49,6 +49,9 @@ export const getProducts = async (
 };
 
 export const getAllProducts = async (): Promise<FeaturedProduct[]> => {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("products");
   const allProducts: FeaturedProduct[] = [];
   let page = 1;
 
