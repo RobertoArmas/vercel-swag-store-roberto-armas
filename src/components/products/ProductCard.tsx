@@ -23,6 +23,7 @@ export default function ProductCard({
           width={500}
           height={500}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          priority
         />
       </div>
       <h3 className="text-sm font-medium text-black">{product.name}</h3>
