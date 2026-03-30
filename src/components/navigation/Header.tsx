@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ShoppingCart, Search } from "lucide-react";
 import CartIndicator from "../shopping-cart/CartIndicator";
 import { Suspense } from "react";
+import { CartIndicatorStaticLoadingState } from "../shopping-cart/CartIndicator.client";
 
 export default function Header() {
   return (
@@ -54,9 +55,7 @@ export default function Header() {
                 <Search className="w-5 h-5 text-gray-700" />
               </button>
               {/* Cart Icon */}
-              <Suspense
-                fallback={<ShoppingCart className="w-5 h-5 text-gray-700" />}
-              >
+              <Suspense fallback={<CartIndicatorStaticLoadingState />}>
                 <CartIndicator />
               </Suspense>
             </div>

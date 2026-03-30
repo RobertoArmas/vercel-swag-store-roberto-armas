@@ -5,8 +5,6 @@ import { cn } from "@/lib/utils";
 import { Footer } from "@/components/navigation/Footer";
 import PromotionalBanner from "@/components/banners/PromotionalBanner";
 import Providers from "@/Providers";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });

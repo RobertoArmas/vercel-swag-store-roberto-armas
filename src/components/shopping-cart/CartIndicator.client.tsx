@@ -4,6 +4,19 @@ import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/lib/cart-manager/hooks/use-cart";
 import { useEffect, useState } from "react";
 
+export function CartIndicatorStaticLoadingState() {
+  return (
+    <>
+      <button
+        aria-label="View Cart"
+        className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors group"
+      >
+        <ShoppingCart className="w-5 h-5 text-gray-700" />
+      </button>
+    </>
+  );
+}
+
 export default function CartIndicator({ itemCount }: { itemCount: number }) {
   const [localCartItemCount, setItemCount] = useState(itemCount);
   const { setIsOpen, isOpen, itemCount: cartItemCount } = useCart();
