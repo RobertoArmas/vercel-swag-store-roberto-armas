@@ -24,13 +24,13 @@ const getCartToken = async (): Promise<string> => {
 export async function addToCart(
   productId: string,
   formData: FormData
-): Promise<Cart> {
+): Promise<Cart | string> {
   const [cartToken, stock] = await Promise.all([
     getCartToken(),
     getProductStock(productId),
   ]);
   if (!stock.inStock || stock.stock < Number(formData.get("quantity"))) {
-    throw new Error("Product is out of stock");
+    return "Product is out of stock";
   }
   return await addToCartApi(
     productId,
@@ -47,13 +47,13 @@ export async function removeItem(productId: string): Promise<Cart> {
 export async function updateQuantity(
   productId: string,
   quantity: number
-): Promise<Cart> {
+): Promise<Cart | string> {
   const [cartToken, stock] = await Promise.all([
     getCartToken(),
     getProductStock(productId),
   ]);
   if (!stock.inStock || stock.stock < quantity) {
-    throw new Error("Product is out of stock");
+    return "Product is out of stock";
   }
   return await updateQuantityApi(productId, quantity, cartToken);
 }

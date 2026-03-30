@@ -30,9 +30,13 @@ export default function AddToCartButtonClient({
     }, 1500);
   }
 
-  const handleFromAction = async (formData: FormData) => {
+  const handleFromAction = async (formData: FormData): Promise<void> => {
     try {
       const data = await addToCart(product.id, formData);
+      if (typeof data === "string") {
+        setError(data);
+        return;
+      }
       handleAdd(data);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Something went wrong");
