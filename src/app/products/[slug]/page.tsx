@@ -1,4 +1,6 @@
-import StockIndicator from "@/components/products/StockIndicator";
+import StockIndicator, {
+  StockIndicatorSkeleton,
+} from "@/components/products/StockIndicator";
 import AddToCartButton from "@/components/shopping-cart/AddToCartButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
@@ -78,7 +80,7 @@ export default async function ProductDetailPage({
           {/* Product info */}
           <div className="flex flex-col gap-6">
             <div>
-              <Suspense fallback={<Skeleton className="w-full h-10" />}>
+              <Suspense fallback={<StockIndicatorSkeleton />}>
                 <StockIndicator slug={product.slug} />
               </Suspense>
               <h1 className="text-3xl md:text-4xl font-bold text-black">

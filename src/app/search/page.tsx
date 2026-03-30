@@ -4,9 +4,7 @@ import { getCategories } from "@/lib/swag-store/categories";
 import SearchInput from "@/components/search/SearchInput.client";
 import CategoryFilter from "@/components/search/CategoryFilter.client";
 import SearchResults from "@/components/search/SearchResults";
-import SearchResultsSkeleton, {
-  FullSearchSkeleton,
-} from "@/components/search/SearchResultsSkeleton";
+import { FullSearchSkeleton } from "@/components/search/SearchResultsSkeleton";
 import { cacheLife, cacheTag } from "next/cache";
 import SearchProvider from "@/components/search/SearchProvider";
 

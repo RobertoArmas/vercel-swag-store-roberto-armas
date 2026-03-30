@@ -1,4 +1,9 @@
 import { getProductStock } from "@/lib/swag-store/product";
+import { Skeleton } from "../ui/skeleton";
+
+export function StockIndicatorSkeleton() {
+  return <Skeleton className="w-20 h-6" />;
+}
 
 export default async function StockIndicator({ slug }: { slug: string }) {
   const inventory = await getProductStock(slug);
