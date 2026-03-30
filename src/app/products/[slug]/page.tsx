@@ -68,6 +68,7 @@ export default async function ProductDetailPage({
           {/* Main product image */}
           <div className="aspect-square bg-neutral-100 rounded-lg overflow-hidden">
             <Image
+              quality={85}
               src={product.images[0]}
               alt={product.name}
               width={800}
@@ -102,6 +103,7 @@ export default async function ProductDetailPage({
                     className="w-20 h-20 rounded-md overflow-hidden border border-gray-200"
                   >
                     <Image
+                      quality={75}
                       src={src}
                       alt={`${product.name} view ${i + 1}`}
                       width={80}

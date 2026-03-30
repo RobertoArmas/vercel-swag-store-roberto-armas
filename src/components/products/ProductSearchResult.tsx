@@ -22,6 +22,7 @@ export default function ProductSearchResult({
           loading="eager"
           src={product.images[0]}
           alt={product.name}
+          quality={75}
           fill
           sizes="(max-width: 640px) 112px, 144px"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
