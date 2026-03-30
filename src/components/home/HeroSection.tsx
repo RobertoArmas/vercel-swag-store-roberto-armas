@@ -12,8 +12,8 @@ type HeroSectionProps = Readonly<{
 
 export function HeroSection({ title, copy, cta }: HeroSectionProps) {
   return (
-    <section className="py-3 md:py-6 max-w-3xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-4 md:py-20 max-w-3xl">
+      <div className="max-w-7xl mx-auto">
         <div className="max-w-2xl">
           {/* Hero Title */}
           <h1 className="text-4xl md:text-5xl font-bold leading-tight text-black mb-4">
