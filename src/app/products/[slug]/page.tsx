@@ -3,6 +3,7 @@ import AddToCartButton from "@/components/shopping-cart/AddToCartButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
 import { getAllProducts, getProductBySlug } from "@/lib/swag-store/product";
+import { formatPrice } from "@/lib/utils";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -47,17 +48,17 @@ export default async function ProductDetailPage({
   params,
 }: ProductDetailProps) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
-
+  const [storeConfiguration, product] = await Promise.all([
+    getStoreConfiguration(),
+    getProductBySlug(slug),
+  ]);
   if (!product) {
     notFound();
   }
-
-  const formattedPrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(product.price / 100);
-
+  const formattedPrice = formatPrice(
+    product.price,
+    storeConfiguration.currency
+  );
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16">

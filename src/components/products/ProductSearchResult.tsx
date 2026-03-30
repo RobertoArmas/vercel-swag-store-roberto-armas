@@ -1,12 +1,16 @@
+import { formatPrice } from "@/lib/utils";
 import { Product } from "@/types/products/product";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ProductSearchResult({ product }: { product: Product }) {
-  const formattedPrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(product.price / 100);
+export default function ProductSearchResult({
+  product,
+  currency,
+}: {
+  product: Product;
+  currency: string;
+}) {
+  const formattedPrice = formatPrice(product.price, currency);
 
   return (
     <Link

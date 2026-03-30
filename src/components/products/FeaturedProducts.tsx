@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { ProductCardSkeleton } from "./ProductCard";
 
 type FeaturedProductsProps = {
+  currency: string;
   title: string;
   viewAllUrl: {
     url: string;
@@ -11,6 +12,7 @@ type FeaturedProductsProps = {
   };
 };
 export default function FeaturedProducts({
+  currency,
   title,
   viewAllUrl,
 }: FeaturedProductsProps) {
@@ -27,7 +29,7 @@ export default function FeaturedProducts({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Suspense fallback={<ProductCardSkeleton />}>
-          <DynamicFeaturedProducts />
+          <DynamicFeaturedProducts currency={currency} />
         </Suspense>
       </div>
     </section>

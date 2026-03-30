@@ -38,7 +38,10 @@ export const getCategoriesData = async () => {
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const categories = await getCategoriesData();
+  const [categories, storeConfiguration] = await Promise.all([
+    getCategoriesData(),
+    getStoreConfiguration(),
+  ]);
 
   return (
     <>
@@ -55,7 +58,10 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <CategoryFilter categories={categories} />
           </div>
 
-          <SearchResults searchParams={searchParams} />
+          <SearchResults
+            searchParams={searchParams}
+            currency={storeConfiguration.currency}
+          />
         </SearchProvider>
       </Suspense>
     </>

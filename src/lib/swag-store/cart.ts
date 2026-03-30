@@ -18,6 +18,7 @@ export async function createNewCart(): Promise<Cart> {
     headers: headers(),
   });
   const { data }: { data: Cart } = await response.json();
+  console.log("createNewCart", data.token);
   return data;
 }
 

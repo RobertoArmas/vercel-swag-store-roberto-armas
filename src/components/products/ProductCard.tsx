@@ -2,12 +2,16 @@ import { FeaturedProduct } from "@/types/products/featured-product";
 import Image from "next/image";
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
+import { formatPrice } from "@/lib/utils";
 
-export default function ProductCard({ product }: { product: FeaturedProduct }) {
-  const formattedPrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(product.price / 100);
+export default function ProductCard({
+  product,
+  currency,
+}: {
+  product: FeaturedProduct;
+  currency: string;
+}) {
+  const formattedPrice = formatPrice(product.price, currency);
 
   return (
     <Link href={`/products/${product.slug}`} className="group">

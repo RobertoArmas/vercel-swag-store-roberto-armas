@@ -2,8 +2,8 @@
 
 import { useCart } from "@/lib/cart-manager";
 import type { FeaturedProduct } from "@/types/products/featured-product";
-import { Check, Minus, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Check, Loader2, Minus, Plus } from "lucide-react";
+import { useState } from "react";
 import { addToCart } from "./actions/cart-actions";
 import { Cart } from "@/types/cart";
 
@@ -14,17 +14,11 @@ export default function AddToCartButtonClient({
   stock: number;
   product: FeaturedProduct;
 }) {
-  const { reloadCart, token, setIsOpen } = useCart();
+  const { setIsOpen, reloadCart } = useCart();
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [isCartReady, setIsCartReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (token) {
-      setTimeout(() => setIsCartReady(true), 100);
-    }
-  }, [token]);
+  const [isLoading, setIsLoading] = useState(false);
 
   function handleAdd(data: Cart) {
     reloadCart(data);
@@ -42,12 +36,17 @@ export default function AddToCartButtonClient({
       handleAdd(data);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Something went wrong");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <form action={handleFromAction} className="flex flex-col gap-3">
-      <input type="hidden" name="token" value={token ?? ""} />
+    <form
+      onSubmit={() => setIsLoading(true)}
+      action={handleFromAction}
+      className="flex flex-col gap-3"
+    >
       <input type="hidden" name="quantity" value={quantity} />
       <div className="flex items-center gap-3">
         <span className="text-sm font-medium text-gray-700">
@@ -80,12 +79,21 @@ export default function AddToCartButtonClient({
 
       <button
         type="submit"
-        disabled={!isCartReady}
-        className={`w-full bg-black text-white py-3.5 px-6 rounded-lg font-medium hover:bg-gray-800 active:bg-gray-900 transition-colors flex items-center justify-center gap-2 cursor-pointer ${
-          !isCartReady ? "opacity-50 cursor-not-allowed" : ""
+        disabled={isLoading || added}
+        className={`w-full py-3.5 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-200 ${
+          isLoading
+            ? "bg-gray-700 text-white/80 cursor-wait animate-pulse"
+            : added
+            ? "bg-green-600 text-white cursor-default"
+            : "bg-black text-white hover:bg-gray-800 active:bg-gray-900 cursor-pointer"
         }`}
       >
-        {added ? (
+        {isLoading ? (
+          <>
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Adding...
+          </>
+        ) : added ? (
           <>
             <Check className="w-5 h-5" />
             Added to Cart

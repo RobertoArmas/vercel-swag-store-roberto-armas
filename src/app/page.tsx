@@ -15,7 +15,8 @@ export const generateMetadata = async () => {
   };
 };
 
-export default function Home() {
+export default async function Home() {
+  const storeConfiguration = await getStoreConfiguration();
   return (
     <>
       <HeroSection
@@ -27,6 +28,7 @@ export default function Home() {
         }}
       />
       <FeaturedProducts
+        currency={storeConfiguration.currency}
         title="Featured Products"
         viewAllUrl={{ url: "/search", text: "View All" }}
       />

@@ -3,31 +3,38 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { CartContextValue } from "./context/cart";
 import { Cart, CartItem } from "@/types/cart";
+import { formatPrice } from "../utils";
 
 type CartState = {
-  token: string | null;
   items: CartItem[];
+  itemCount: number | null;
+  subtotal: string;
   initialized: boolean;
 };
 
 type CartAction =
-  | { type: "INIT"; items: Cart["items"]; token: string }
+  | { type: "INIT"; cart: Cart; token: string }
   | { type: "CREATE_EMPTY_CART"; token: string }
   | { type: "RELOAD_CART"; data: Cart };
 
 const STORAGE_KEY = "swag-store-cart";
-const STORAGE_TOKEN = "swag-store-cart-token";
 
 function cartReducer(state: CartState, action: CartAction): CartState {
   switch (action.type) {
     case "INIT":
-      return { items: action.items, initialized: true, token: action.token };
+      return {
+        items: action.cart.items,
+        itemCount: action.cart.totalItems,
+        subtotal: formatPrice(action.cart.subtotal, action.cart.currency),
+        initialized: true,
+      };
 
     case "RELOAD_CART":
       return {
         ...state,
         items: action.data.items,
-        token: action.data.token,
+        itemCount: action.data.totalItems,
+        subtotal: formatPrice(action.data.subtotal, action.data.currency),
         initialized: true,
       };
 
@@ -40,54 +47,35 @@ export function useCartReducer() {
   const [isOpen, setIsOpen] = useState(false);
   const [state, dispatch] = useReducer(cartReducer, {
     items: [],
+    itemCount: null,
     initialized: false,
-    token: null,
+    subtotal: formatPrice(0),
   });
 
-  const loadCart = useCallback((token: string) => {
-    fetch(`/api/cart?token=${token}`, {
+  const loadCart = useCallback(() => {
+    fetch(`/api/cart`, {
       method: "GET",
     })
       .then((res) => res.json())
       .then((data) => {
-        dispatch({ type: "INIT", items: data.items, token: data.token });
+        dispatch({ type: "INIT", cart: data, token: data.token });
       });
   }, []);
 
   useEffect(() => {
-    const cartToken = sessionStorage.getItem(STORAGE_TOKEN);
-    if (!cartToken) {
-      fetch(`/api/cart/create`, {
-        method: "POST",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          sessionStorage.setItem(STORAGE_TOKEN, data.token);
-          dispatch({
-            type: "CREATE_EMPTY_CART",
-            token: data.token,
-          });
-          loadCart(data.token);
-        });
-    } else {
-      loadCart(cartToken);
-    }
+    loadCart();
   }, [loadCart]);
 
   useEffect(() => {
     if (state.initialized) {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
     }
-  }, [state.items, state.initialized, state.token]);
+  }, [state.items, state.initialized]);
 
-  const itemCount = state.items.reduce((sum, i) => sum + i.quantity, 0);
-  const subtotal = state.items.reduce(
-    (sum, i) => sum + i.product.price * i.quantity,
-    0
-  );
+  const itemCount = state.itemCount;
+  const subtotal = state.subtotal;
 
   return {
-    token: state.token,
     items: state.items,
     reloadCart: (data: Cart) => dispatch({ type: "RELOAD_CART", data }),
     setIsOpen,

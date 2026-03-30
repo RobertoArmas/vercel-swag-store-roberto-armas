@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ShoppingCart, Search } from "lucide-react";
-import CartIndicator from "../shopping-cart/CartIndicator.client";
+import CartIndicator from "../shopping-cart/CartIndicator";
 import { Suspense } from "react";
 
 export default function Header() {

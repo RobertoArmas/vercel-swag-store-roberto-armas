@@ -4,10 +4,12 @@ import SearchResultsClient from "./SearchResults.client";
 
 type SearchResultsProps = {
   searchParams: Promise<{ q?: string; category?: string; page?: number }>;
+  currency: string;
 };
 
 export default async function SearchResults({
   searchParams,
+  currency,
 }: SearchResultsProps) {
   const { q, category, page } = await searchParams;
   const query = q ?? "";
@@ -63,7 +65,7 @@ export default async function SearchResults({
       </p>
 
       <div className="flex flex-col gap-4">
-        <SearchResultsClient products={products.data} />
+        <SearchResultsClient products={products.data} currency={currency} />
       </div>
       <div className="flex justify-center items-center mt-8 md:mt-16">
         <Pagination

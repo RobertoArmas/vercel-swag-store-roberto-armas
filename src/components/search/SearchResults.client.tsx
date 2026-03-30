@@ -7,8 +7,10 @@ import { Product } from "@/types/products/product";
 
 export default function SearchResultsClient({
   products,
+  currency,
 }: {
   products: Product[];
+  currency: string;
 }) {
   const { isLoading } = useSearch();
 
@@ -19,7 +21,11 @@ export default function SearchResultsClient({
   return (
     <>
       {products.map((product) => (
-        <ProductSearchResult key={product.id} product={product} />
+        <ProductSearchResult
+          key={product.id}
+          product={product}
+          currency={currency}
+        />
       ))}
     </>
   );
