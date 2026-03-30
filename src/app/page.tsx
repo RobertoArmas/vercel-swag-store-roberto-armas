@@ -28,7 +28,10 @@ export default function Home() {
           label: "Browse All Products",
         }}
       />
-      <FeaturedProducts />
+      <FeaturedProducts
+        title="Featured Products"
+        viewAllUrl={{ url: "/search", text: "View All" }}
+      />
     </main>
   );
 }
