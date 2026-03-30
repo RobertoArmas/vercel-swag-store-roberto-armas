@@ -6,6 +6,7 @@ export async function GET() {
     const healthzResponse = await healthz();
     return NextResponse.json({ success: true, swagStoreApi: healthzResponse });
   } catch (error) {
+    console.error(error);
     return NextResponse.json(
       { success: false, error: "unhealthy" },
       { status: 500 }

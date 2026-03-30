@@ -1,7 +1,5 @@
 import Link from "next/link";
 import DynamicFeaturedProducts from "./DynamicFeaturedProducts";
-import { Suspense } from "react";
-import { ProductCardSkeleton } from "./ProductCard";
 
 type FeaturedProductsProps = {
   currency: string;
