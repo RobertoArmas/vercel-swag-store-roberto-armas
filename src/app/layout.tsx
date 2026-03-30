@@ -54,11 +54,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Providers>
           <Header />
-          <Suspense
-            fallback={<Skeleton className="w-full h-[50px] rounded-lg" />}
-          >
-            <PromotionalBanner />
-          </Suspense>
+          <PromotionalBanner />
           <main className="flex flex-1 w-full max-w-7xl mx-auto flex-col px-4 sm:px-8 bg-white dark:bg-black pb-16 md:pb-32">
             {children}
           </main>
