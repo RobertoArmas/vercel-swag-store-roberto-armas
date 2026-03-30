@@ -1,5 +1,20 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
+export function FullSearchSkeleton() {
+  return (
+    <>
+      <div className="flex flex-col sm:flex-row gap-3 mb-8">
+        <div className="flex-1">
+          <Skeleton className="h-10 w-full" />
+        </div>
+
+        <Skeleton className="h-10 w-20" />
+      </div>
+
+      <SearchResultsSkeleton />
+    </>
+  );
+}
 export default function SearchResultsSkeleton() {
   return (
     <div className="flex flex-col gap-4">

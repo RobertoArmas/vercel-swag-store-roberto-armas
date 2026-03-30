@@ -4,7 +4,9 @@ import { getCategories } from "@/lib/swag-store/categories";
 import SearchInput from "@/components/search/SearchInput.client";
 import CategoryFilter from "@/components/search/CategoryFilter.client";
 import SearchResults from "@/components/search/SearchResults";
-import SearchResultsSkeleton from "@/components/search/SearchResultsSkeleton";
+import SearchResultsSkeleton, {
+  FullSearchSkeleton,
+} from "@/components/search/SearchResultsSkeleton";
 import { cacheLife, cacheTag } from "next/cache";
 import SearchProvider from "@/components/search/SearchProvider";
 
@@ -48,7 +50,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
       <h1 className="text-3xl pt-8 md:pt-16 font-bold text-black dark:text-white mb-8">
         Search
       </h1>
-      <Suspense fallback={<SearchResultsSkeleton />}>
+      <Suspense fallback={<FullSearchSkeleton />}>
         <SearchProvider>
           <div className="flex flex-col sm:flex-row gap-3 mb-8">
             <div className="flex-1">
