@@ -1,4 +1,3 @@
-import ProductSearchResult from "@/components/products/ProductSearchResult";
 import { getProducts } from "@/lib/swag-store/product";
 import Pagination from "./Pagination";
 import SearchResultsClient from "./SearchResults.client";
