@@ -4,12 +4,22 @@ const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
   images: {
+    qualities: [75, 85],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "*.public.blob.vercel-storage.com",
       },
     ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/healthz",
+        destination: "/api/healthz",
+      },
+    ];
   },
 };
 
