@@ -1,7 +1,11 @@
 import { getActivePromotion } from "@/lib/swag-store/promotions";
 import { Promotion } from "@/types/store/promotions";
+import { cacheLife, cacheTag } from "next/cache";
 
 export default async function PromotionalBanner() {
+  "use cache";
+  cacheLife("days");
+  cacheTag("promotional-banner");
   const isValid = (promotion: Promotion) => {
     return promotion.active;
     // Comented Date validation as API Response invalid dates
