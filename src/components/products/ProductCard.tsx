@@ -18,13 +18,12 @@ export default function ProductCard({
       <div className="aspect-square bg-neutral-100 rounded-lg overflow-hidden mb-3">
         <Image
           quality={85}
-          loading="eager"
           src={product.images[0]}
           alt={product.name}
           width={500}
           height={500}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          priority
+          preload
         />
       </div>
       <h3 className="text-sm font-medium text-black">{product.name}</h3>

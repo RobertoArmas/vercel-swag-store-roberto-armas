@@ -130,6 +130,7 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
                         width={80}
                         height={80}
                         className="w-full h-full object-cover"
+                        loading="eager"
                       />
                     </Link>
 

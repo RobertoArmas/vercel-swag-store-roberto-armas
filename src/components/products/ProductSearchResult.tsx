@@ -19,7 +19,7 @@ export default function ProductSearchResult({
     >
       <div className="relative h-28 w-28 sm:h-36 sm:w-36 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-100">
         <Image
-          loading="eager"
+          preload
           src={product.images[0]}
           alt={product.name}
           quality={75}

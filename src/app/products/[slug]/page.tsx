@@ -74,7 +74,7 @@ export default async function ProductDetailPage({
               width={800}
               height={800}
               className="w-full h-full object-cover"
-              priority
+              preload
             />
           </div>
 
