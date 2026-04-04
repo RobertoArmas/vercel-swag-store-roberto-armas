@@ -2,7 +2,7 @@
 
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "@/lib/cart-manager/hooks/use-cart";
-import { useEffect, useState } from "react";
+import { useCallback, memo, useState, useEffect } from "react";
 
 export function CartIndicatorStaticLoadingState() {
   return (
@@ -17,32 +17,39 @@ export function CartIndicatorStaticLoadingState() {
   );
 }
 
-export default function CartIndicator({ itemCount }: { itemCount: number }) {
-  const [localCartItemCount, setItemCount] = useState(itemCount);
-  const { setIsOpen, isOpen, itemCount: cartItemCount } = useCart();
+function CartIndicatorContent({ itemCount: _itemCount }: { itemCount?: number }) {
+  const { setIsOpen, isOpen, itemCount } = useCart();
+  const [itemCountState, setItemCount] = useState<number>(_itemCount ?? 0);
 
-  useEffect(() => {
-    if (cartItemCount != null) {
+    useEffect(() => {
+    if (itemCount != null) {
       setTimeout(() => {
-        setItemCount(cartItemCount);
+        setItemCount(itemCount);
       }, 0);
     }
-  }, [cartItemCount]);
+  }, [itemCount]);
+
+  const handleOpenCart = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [isOpen, setIsOpen]);
 
   return (
     <>
       <button
         aria-label="View Cart"
         className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors group"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleOpenCart}
       >
         <ShoppingCart className="w-5 h-5 text-gray-700" />
-        {localCartItemCount > 0 && (
+        {itemCountState != null && itemCountState > 0 && (
           <span className="absolute top-0 right-0 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center group-hover:bg-gray-800">
-            {localCartItemCount > 99 ? "99+" : localCartItemCount}
+            {itemCountState > 99 ? "99+" : itemCountState}
           </span>
         )}
       </button>
     </>
   );
 }
+
+// Memoize to prevent re-renders from parent
+export default memo(CartIndicatorContent);

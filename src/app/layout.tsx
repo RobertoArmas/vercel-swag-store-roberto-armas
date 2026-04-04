@@ -8,17 +8,25 @@ import Providers from "@/Providers";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Suspense } from "react";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+// Optimize font loading with display strategy
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap", // Prevent FOUT - show fallback while loading
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const generateMetadata = async () => {
@@ -54,7 +62,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Providers>
           <Header />
-          <PromotionalBanner />
+          <Suspense fallback={null}>
+            <PromotionalBanner />
+          </Suspense>
           <main className="flex flex-1 w-full max-w-7xl mx-auto flex-col px-4 sm:px-8 bg-white dark:bg-black pb-16 md:pb-32">
             {children}
           </main>

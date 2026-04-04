@@ -4,15 +4,15 @@ import { useCart } from "@/lib/cart-manager";
 import { CircleAlert, Loader2, Minus, Plus, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, memo, useTransition } from "react";
 import { removeItem, updateQuantity } from "./actions/cart-actions";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { formatPrice } from "@/lib/utils";
 
-export default function ViewCart({ onClose }: { onClose: () => void }) {
+function ViewCartContent({ onClose }: { onClose: () => void }) {
   const { items, reloadCart, subtotal, itemCount } = useCart();
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -29,32 +29,41 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [onClose]);
 
-  const handleRemoveItem = async (productId: string) => {
-    try {
-      const data = await removeItem(productId);
-      reloadCart(data);
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // Memoize handlers to prevent re-renders
+  const handleRemoveItem = useCallback(
+    async (productId: string) => {
+      startTransition(async () => {
+        try {
+          const data = await removeItem(productId);
+          reloadCart(data);
+        } catch (error) {
+          setError(
+            error instanceof Error ? error.message : "Something went wrong"
+          );
+        }
+      });
+    },
+    [reloadCart]
+  );
 
-  const handleUpdateQuantity = async (productId: string, quantity: number) => {
-    try {
-      const data = await updateQuantity(productId, quantity);
-      if (typeof data === "string") {
-        setError(data);
-        return data;
-      }
-      reloadCart(data);
-    } catch (error) {
-      console.error(error);
-      setError("Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const handleUpdateQuantity = useCallback(
+    async (productId: string, quantity: number) => {
+      startTransition(async () => {
+        try {
+          const data = await updateQuantity(productId, quantity);
+          if (typeof data === "string") {
+            setError(data);
+            return;
+          }
+          reloadCart(data);
+        } catch (error) {
+          console.error(error);
+          setError("Something went wrong");
+        }
+      });
+    },
+    [reloadCart]
+  );
 
   return (
     <>
@@ -87,10 +96,10 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
 
         {/* Items */}
         <div className="flex-1 overflow-y-auto px-6 py-4">
-          {isLoading ? (
+          {isPending ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
               <Loader2 className="w-6 h-6 text-gray-500 animate-spin" />
-              <p className="text-lg font-medium">Loading your cart...</p>
+              <p className="text-lg font-medium">Updating your cart...</p>
             </div>
           ) : items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-gray-500 gap-2">
@@ -149,48 +158,37 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
                       <div className="flex items-center justify-between mt-2">
                         {/* Quantity controls */}
                         <div className="flex items-center border border-gray-200 rounded-md">
-                          <form
-                            onSubmit={() => {
-                              setIsLoading(true);
-                            }}
-                            action={async () => {
-                              setIsLoading(true);
-                              await handleUpdateQuantity(
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleUpdateQuantity(
                                 item.productId,
-                                item.quantity - 1
-                              );
-                            }}
+                                Math.max(1, item.quantity - 1)
+                              )
+                            }
+                            disabled={isPending || item.quantity <= 1}
+                            className="p-1.5 hover:bg-gray-100 disabled:opacity-50 transition-colors"
+                            aria-label={`Decrease quantity of ${item.product.name}`}
                           >
-                            <button
-                              type="submit"
-                              className="p-1.5 hover:bg-gray-100 transition-colors"
-                              aria-label={`Decrease quantity of ${item.product.name}`}
-                            >
-                              <Minus className="w-3.5 h-3.5" />
-                            </button>
-                          </form>
+                            <Minus className="w-3.5 h-3.5" />
+                          </button>
                           <span className="px-3 text-sm font-medium tabular-nums select-none">
                             {item.quantity}
                           </span>
-                          <form
-                            onSubmit={() => {
-                              setIsLoading(true);
-                            }}
-                            action={async () => {
-                              await handleUpdateQuantity(
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleUpdateQuantity(
                                 item.productId,
                                 item.quantity + 1
-                              );
-                            }}
+                              )
+                            }
+                            disabled={isPending}
+                            className="p-1.5 hover:bg-gray-100 disabled:opacity-50 transition-colors"
+                            aria-label={`Increase quantity of ${item.product.name}`}
                           >
-                            <button
-                              type="submit"
-                              className="p-1.5 hover:bg-gray-100 transition-colors"
-                              aria-label={`Increase quantity of ${item.product.name}`}
-                            >
-                              <Plus className="w-3.5 h-3.5" />
-                            </button>
-                          </form>
+                            <Plus className="w-3.5 h-3.5" />
+                          </button>
                         </div>
 
                         <div className="flex items-center gap-3">
@@ -201,22 +199,15 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
                               item.product.currency
                             )}
                           </span>
-                          <form
-                            onSubmit={() => {
-                              setIsLoading(true);
-                            }}
-                            action={async () => {
-                              await handleRemoveItem(item.productId);
-                            }}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveItem(item.productId)}
+                            disabled={isPending}
+                            className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 disabled:opacity-50 rounded transition-colors"
+                            aria-label={`Remove ${item.product.name} from cart`}
                           >
-                            <button
-                              type="submit"
-                              className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded transition-colors"
-                              aria-label={`Remove ${item.product.name} from cart`}
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </form>
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -245,3 +236,6 @@ export default function ViewCart({ onClose }: { onClose: () => void }) {
     </>
   );
 }
+
+const ViewCart = memo(ViewCartContent);
+export default ViewCart;

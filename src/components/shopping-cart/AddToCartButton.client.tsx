@@ -3,7 +3,7 @@
 import { useCart } from "@/lib/cart-manager";
 import type { FeaturedProduct } from "@/types/products/featured-product";
 import { Check, Loader2, Minus, Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useTransition, useCallback } from "react";
 import { addToCart } from "./actions/cart-actions";
 import { Cart } from "@/types/cart";
 
@@ -18,36 +18,44 @@ export default function AddToCartButtonClient({
   const [added, setAdded] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
-  function handleAdd(data: Cart) {
+  const handleAdd = useCallback((data: Cart) => {
     reloadCart(data);
+    
     setAdded(true);
-    setTimeout(() => {
-      setIsOpen(true);
-      setAdded(false);
-      setQuantity(1);
-    }, 1500);
-  }
+    
+    requestAnimationFrame(() => {
+      startTransition(() => {
+        setTimeout(() => {
+          setIsOpen(true);
+          setAdded(false);
+          setQuantity(1);
+        }, 1500);
+      });
+    });
+  }, [reloadCart, setIsOpen]);
 
-  const handleFromAction = async (formData: FormData): Promise<void> => {
-    try {
-      const data = await addToCart(product.id, formData);
-      if (typeof data === "string") {
-        setError(data);
-        return;
+  const handleFromAction = useCallback(
+    async (formData: FormData): Promise<void> => {
+      try {
+        const data = await addToCart(product.id, formData);
+        if (typeof data === "string") {
+          setError(data);
+          return;
+        }
+        handleAdd(data);
+      } catch (error) {
+        setError(
+          error instanceof Error ? error.message : "Something went wrong"
+        );
       }
-      handleAdd(data);
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "Something went wrong");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [product.id, handleAdd]
+  );
 
   return (
     <form
-      onSubmit={() => setIsLoading(true)}
       action={handleFromAction}
       className="flex flex-col gap-3"
     >
@@ -60,9 +68,10 @@ export default function AddToCartButtonClient({
         <span className="text-sm font-medium text-gray-700">Quantity</span>
         <div className="flex items-center border border-gray-300 rounded-lg">
           <button
+            aria-label="remove"
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            disabled={quantity <= 1}
+            disabled={quantity <= 1 || isPending}
             className="p-2 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors rounded-l-lg cursor-pointer"
           >
             <Minus className="w-4 h-4" />
@@ -71,9 +80,10 @@ export default function AddToCartButtonClient({
             {quantity}
           </span>
           <button
+            aria-label="add"
             type="button"
             onClick={() => setQuantity((q) => Math.min(stock, q + 1))}
-            disabled={quantity >= stock}
+            disabled={quantity >= stock || isPending}
             className="p-2 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors rounded-r-lg cursor-pointer"
           >
             <Plus className="w-4 h-4" />
@@ -83,16 +93,16 @@ export default function AddToCartButtonClient({
 
       <button
         type="submit"
-        disabled={isLoading || added}
+        disabled={isPending || added}
         className={`w-full py-3.5 px-6 rounded-lg font-medium flex items-center justify-center gap-2 transition-all duration-200 ${
-          isLoading
+          isPending
             ? "bg-gray-700 text-white/80 cursor-wait animate-pulse"
             : added
             ? "bg-green-600 text-white cursor-default"
             : "bg-black text-white hover:bg-gray-800 active:bg-gray-900 cursor-pointer"
         }`}
       >
-        {isLoading ? (
+        {isPending ? (
           <>
             <Loader2 className="w-5 h-5 animate-spin" />
             Adding...
