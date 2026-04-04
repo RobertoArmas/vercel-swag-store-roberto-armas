@@ -24,6 +24,7 @@ export default function ProductSearchResult({
           alt={product.name}
           quality={75}
           fill
+          placeholder="blur"
           sizes="(max-width: 640px) 112px, 144px"
           className="object-cover group-hover:scale-105 transition-transform duration-300"
         />
