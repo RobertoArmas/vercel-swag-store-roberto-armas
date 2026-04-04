@@ -6,6 +6,8 @@ import { Footer } from "@/components/navigation/Footer";
 import PromotionalBanner from "@/components/banners/PromotionalBanner";
 import Providers from "@/Providers";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -56,6 +58,8 @@ export default function RootLayout({
           <main className="flex flex-1 w-full max-w-7xl mx-auto flex-col px-4 sm:px-8 bg-white dark:bg-black pb-16 md:pb-32">
             {children}
           </main>
+          <Analytics />
+          <SpeedInsights />
           <Footer />
         </Providers>
       </body>
