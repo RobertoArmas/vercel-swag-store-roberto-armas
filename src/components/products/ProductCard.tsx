@@ -7,9 +7,11 @@ import { formatPrice } from "@/lib/utils";
 export default function ProductCard({
   product,
   currency,
+  priority = false,
 }: {
   product: FeaturedProduct;
   currency: string;
+  priority?: boolean;
 }) {
   const formattedPrice = formatPrice(product.price, currency);
 
@@ -22,8 +24,10 @@ export default function ProductCard({
           alt={product.name}
           width={500}
           height={500}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          preload
+          priority={priority}
+          loading={priority ? "eager" : "lazy"}
         />
       </div>
       <h3 className="text-sm font-medium text-black">{product.name}</h3>

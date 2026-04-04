@@ -19,6 +19,12 @@ export default async function proxy(req: NextRequest) {
       }
     );
   }
+
+  
+  // Security headers
+  res.headers.set('X-Frame-Options', 'DENY')
+  res.headers.set('X-Content-Type-Options', 'nosniff')
+  
   return res;
 }
 
