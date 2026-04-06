@@ -18,7 +18,7 @@ export default async function DynamicFeaturedProducts({
           key={product.id}
           product={product}
           currency={currency}
-          priority={index === 0}
+          priority={index < 3}
         />
       ))}
     </>
