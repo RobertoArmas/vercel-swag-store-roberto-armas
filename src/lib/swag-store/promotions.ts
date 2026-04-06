@@ -1,3 +1,5 @@
+import "server-only";
+
 import { Promotion } from "@/types/store/promotions";
 import { headers } from "./utils";
 

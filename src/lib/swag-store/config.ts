@@ -1,3 +1,5 @@
+import "server-only";
+
 import { StoreConfiguration } from "@/types/store";
 import { cacheLife, cacheTag } from "next/cache";
 
