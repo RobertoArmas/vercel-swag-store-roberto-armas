@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { connection, NextResponse } from "next/server";
 import healthz from "@/lib/swag-store/healthz";
 
 export async function GET() {
+  await connection();
   try {
     const healthzResponse = await healthz();
     return NextResponse.json({ success: true, swagStoreApi: healthzResponse });
