@@ -1,24 +1,11 @@
 import { HeroSection } from "@/components/home/HeroSection";
 import FeaturedProducts from "@/components/products/FeaturedProducts";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
+import { Metadata } from "next";
 import { cacheLife, cacheTag } from "next/cache";
 
-export const generateMetadata = async () => {
-  const storeConfiguration = await getStoreConfiguration();
-  return {
-    title: {
-      template: storeConfiguration.seo.titleTemplate,
-      default: "Home | Vercel Swag Store",
-    },
-    description: storeConfiguration.seo.defaultDescription,
-    openGraph: {
-      title: {
-        template: storeConfiguration.seo.titleTemplate,
-        default: "Home | Vercel Swag Store",
-      },
-      description: storeConfiguration.seo.defaultDescription,
-    },
-  };
+export const metadata: Metadata = {
+  title: "Home",
 };
 
 export default async function Home() {
