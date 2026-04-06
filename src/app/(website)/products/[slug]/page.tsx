@@ -36,6 +36,7 @@ export const generateMetadata = async ({
       title: product.name,
       description: product.description,
       images: product.images,
+      url: `/products/${product.slug}`,
     },
     alternates: {
       canonical: `/products/${product.slug}`,

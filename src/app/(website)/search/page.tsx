@@ -20,6 +20,9 @@ export type SearchParams = {
 
 export const metadata: Metadata = {
   title: "Search",
+  openGraph: {
+    url: "/search",
+  },
   alternates: {
     canonical: "/search",
   },
