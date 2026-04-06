@@ -7,6 +7,7 @@ import SearchResults from "@/components/search/SearchResults";
 import { FullSearchSkeleton } from "@/components/search/SearchResultsSkeleton";
 import { cacheLife, cacheTag } from "next/cache";
 import SearchProvider from "@/components/search/SearchProvider";
+import { Metadata } from "next";
 
 type SearchPageProps = {
   searchParams: Promise<SearchParams>;
@@ -17,17 +18,8 @@ export type SearchParams = {
   category?: string;
 };
 
-export const generateMetadata = async () => {
-  const storeConfiguration = await getStoreConfiguration();
-  const title = storeConfiguration.seo.titleTemplate.replace("%s", "Search");
-  return {
-    title: title,
-    description: storeConfiguration.seo.defaultDescription,
-    openGraph: {
-      title: title,
-      description: storeConfiguration.seo.defaultDescription,
-    },
-  };
+export const metadata: Metadata = {
+  title: "Search",
 };
 
 export const getCategoriesData = async () => {

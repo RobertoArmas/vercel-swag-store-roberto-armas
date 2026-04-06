@@ -1,6 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Assignment: Vercel Swag Store
 
-## Getting Started
+Build a storefront using Next.js 16 to demonstrate your understanding of modern React Server Component patterns, including the "use cache" directive, Suspense boundaries, Server Actions, and the distinction between static and dynamic data.
 
 First, run the development server:
 
