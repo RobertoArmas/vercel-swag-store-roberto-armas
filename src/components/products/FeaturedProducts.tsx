@@ -46,10 +46,10 @@ export default function FeaturedProducts({
   viewAllUrl,
 }: FeaturedProductsProps) {
   return (
-    <Suspense fallback={<FeaturedProductsSkeleton />}>
-      <FeaturedProductsLayout title={title} viewAllUrl={viewAllUrl}>
+    <FeaturedProductsLayout title={title} viewAllUrl={viewAllUrl}>
+      <Suspense fallback={<FeaturedProductsSkeleton />}>
         <DynamicFeaturedProducts currency={currency} />
-      </FeaturedProductsLayout>
-    </Suspense>
+      </Suspense>
+    </FeaturedProductsLayout>
   );
 }
