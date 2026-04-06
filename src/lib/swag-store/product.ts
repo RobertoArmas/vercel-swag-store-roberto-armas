@@ -1,3 +1,5 @@
+import "server-only";
+
 import { FeaturedProduct } from "@/types/products/featured-product";
 import { ProductStock } from "@/types/products/stock";
 import { cacheLife, cacheTag } from "next/cache";

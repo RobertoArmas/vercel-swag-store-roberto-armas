@@ -1,3 +1,5 @@
+import "server-only";
+
 import { Category } from "@/types/categories";
 import { headers } from "./utils";
 

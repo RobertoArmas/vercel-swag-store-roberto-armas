@@ -1,3 +1,4 @@
+import "server-only";
 type HealthzResponse = {
   status: string;
   timestamp: string;

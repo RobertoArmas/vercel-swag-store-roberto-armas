@@ -1,3 +1,5 @@
+import "server-only";
+
 import { Cart } from "@/types/cart";
 import { headers } from "./utils";
 
