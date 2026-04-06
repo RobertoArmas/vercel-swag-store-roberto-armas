@@ -20,6 +20,9 @@ export type SearchParams = {
 
 export const metadata: Metadata = {
   title: "Search",
+  alternates: {
+    canonical: "/search",
+  },
 };
 
 export const getCategoriesData = async () => {
