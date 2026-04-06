@@ -20,31 +20,36 @@ export default function AddToCartButtonClient({
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
-  const handleAdd = useCallback((data: Cart) => {
-    reloadCart(data);
-    
-    setAdded(true);
-    
-    requestAnimationFrame(() => {
-      startTransition(() => {
-        setTimeout(() => {
-          setIsOpen(true);
-          setAdded(false);
-          setQuantity(1);
-        }, 1500);
+  const handleAdd = useCallback(
+    (data: Cart) => {
+      reloadCart(data);
+
+      setAdded(true);
+
+      requestAnimationFrame(() => {
+        startTransition(() => {
+          setTimeout(() => {
+            setIsOpen(true);
+            setAdded(false);
+            setQuantity(1);
+          }, 1500);
+        });
       });
-    });
-  }, [reloadCart, setIsOpen]);
+    },
+    [reloadCart, setIsOpen]
+  );
 
   const handleFromAction = useCallback(
     async (formData: FormData): Promise<void> => {
       try {
-        const data = await addToCart(product.id, formData);
-        if (typeof data === "string") {
-          setError(data);
-          return;
-        }
-        handleAdd(data);
+        startTransition(async () => {
+          const data = await addToCart(product.id, formData);
+          if (typeof data === "string") {
+            setError(data);
+            return;
+          }
+          handleAdd(data);
+        });
       } catch (error) {
         setError(
           error instanceof Error ? error.message : "Something went wrong"
@@ -55,10 +60,7 @@ export default function AddToCartButtonClient({
   );
 
   return (
-    <form
-      action={handleFromAction}
-      className="flex flex-col gap-3"
-    >
+    <form action={handleFromAction} className="flex flex-col gap-3">
       <input type="hidden" name="quantity" value={quantity} />
       <div className="flex items-center gap-3">
         <span className="text-sm font-medium text-gray-700">
