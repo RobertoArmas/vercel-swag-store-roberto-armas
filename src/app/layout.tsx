@@ -6,8 +6,8 @@ import { Footer } from "@/components/navigation/Footer";
 import PromotionalBanner from "@/components/banners/PromotionalBanner";
 import Providers from "@/Providers";
 import { getStoreConfiguration } from "@/lib/swag-store/config";
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
 
 // Optimize font loading with display strategy
@@ -31,12 +31,17 @@ const geistMono = Geist_Mono({
 
 export const generateMetadata = async () => {
   const storeConfiguration = await getStoreConfiguration();
-  const title = storeConfiguration.seo.defaultTitle;
   return {
-    title: title,
+    title: {
+      template: storeConfiguration.seo.titleTemplate,
+      default: storeConfiguration.seo.defaultTitle,
+    },
     description: storeConfiguration.seo.defaultDescription,
     openGraph: {
-      title: title,
+      title: {
+        template: storeConfiguration.seo.titleTemplate,
+        default: storeConfiguration.seo.defaultTitle,
+      },
       description: storeConfiguration.seo.defaultDescription,
     },
   };

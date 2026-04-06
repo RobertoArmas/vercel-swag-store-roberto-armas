@@ -5,12 +5,17 @@ import { cacheLife, cacheTag } from "next/cache";
 
 export const generateMetadata = async () => {
   const storeConfiguration = await getStoreConfiguration();
-  const title = storeConfiguration.seo.titleTemplate.replace("%s", "Home");
   return {
-    title: title,
+    title: {
+      template: storeConfiguration.seo.titleTemplate,
+      default: "Home | Vercel Swag Store",
+    },
     description: storeConfiguration.seo.defaultDescription,
     openGraph: {
-      title: title,
+      title: {
+        template: storeConfiguration.seo.titleTemplate,
+        default: "Home | Vercel Swag Store",
+      },
       description: storeConfiguration.seo.defaultDescription,
     },
   };

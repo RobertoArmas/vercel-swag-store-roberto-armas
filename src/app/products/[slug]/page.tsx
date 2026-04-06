@@ -29,19 +29,13 @@ export const generateMetadata = async ({
   if (!product) {
     notFound();
   }
-  const storeConfiguration = await getStoreConfiguration();
-  const title = storeConfiguration.seo.titleTemplate.replace(
-    "%s",
-    product.name
-  );
   return {
-    title: title,
-    description:
-      product.description || storeConfiguration.seo.defaultDescription,
+    title: product.name,
+    description: product.description,
     openGraph: {
-      title: title,
-      description:
-        product.description || storeConfiguration.seo.defaultDescription,
+      title: product.name,
+      description: product.description,
+      images: product.images,
     },
   };
 };
