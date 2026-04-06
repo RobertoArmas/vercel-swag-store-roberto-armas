@@ -32,6 +32,7 @@ const geistMono = Geist_Mono({
 export const generateMetadata = async () => {
   const storeConfiguration = await getStoreConfiguration();
   return {
+    metadataBase: new URL(process.env.PUBLIC_URL || ""),
     title: {
       template: storeConfiguration.seo.titleTemplate,
       default: storeConfiguration.seo.defaultTitle,

@@ -6,6 +6,9 @@ import { cacheLife, cacheTag } from "next/cache";
 
 export const metadata: Metadata = {
   title: "Home",
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default async function Home() {
