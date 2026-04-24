@@ -2,7 +2,7 @@ import { cacheLife, cacheTag } from "next/cache";
 import ProductCard from "./ProductCard";
 import { getFeaturedProducts } from "@/lib/swag-store/product";
 
-export default async function DynamicFeaturedProducts({
+export default async function FeaturedProductList({
   currency,
 }: {
   currency: string;

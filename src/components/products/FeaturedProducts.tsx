@@ -1,7 +1,5 @@
 import Link from "next/link";
-import DynamicFeaturedProducts from "./DynamicFeaturedProducts";
-import { Suspense } from "react";
-import { FeaturedProductsSkeleton } from "./FeaturedProductsSkeleton";
+import FeaturedProductList from "./FeaturedProductList";
 
 type FeaturedProductsProps = {
   currency: string;
@@ -47,9 +45,7 @@ export default function FeaturedProducts({
 }: FeaturedProductsProps) {
   return (
     <FeaturedProductsLayout title={title} viewAllUrl={viewAllUrl}>
-      <Suspense fallback={<FeaturedProductsSkeleton />}>
-        <DynamicFeaturedProducts currency={currency} />
-      </Suspense>
+      <FeaturedProductList currency={currency} />
     </FeaturedProductsLayout>
   );
 }
